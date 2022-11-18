@@ -1,12 +1,17 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
-# Relacionamento Um para Um (OneToOneField)
+# - Relacionamento Um para Um (OneToOneField)
 # Cada carro só pode ter relacionamento com 1 chassi
 # Cada chassi também só pode estar relacionado a um carro.
 
-# Relacionamento Um para Muitos (ForeignKey - One to Many)
+# - Relacionamento Um para Muitos (ForeignKey - One to Many)
 # Cada carro tem sua montadora
 # Cada montadora tem diversos carros
+
+# - Relacionamento Muitos para Muitos (Many to Many)
+# Cada carro poderá ter vários motoristas (motoristas=user)
+# Cada motorista poderá ter vários carros
 
 class Chassi(models.Model):
     numero = models.CharField('Chassi', max_length=16, help_text='Máximo 16 caracteres')
@@ -33,6 +38,7 @@ class Montadora(models.Model):
 class Carro(models.Model):
     chassi = models.OneToOneField(Chassi, on_delete=models.CASCADE)
     montadora = models.ForeignKey(Montadora, on_delete=models.CASCADE)
+    motoristas = models.ManyToManyField(get_user_model())
     modelo = models.CharField('Modelo', max_length=30, help_text='Máximo 30 caracteres')
     preco = models.DecimalField('Preço', max_digits=8, decimal_places=2) # pode ser até 99999999,99
     
